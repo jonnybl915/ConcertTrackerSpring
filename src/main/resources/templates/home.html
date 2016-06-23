@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Concert Tracker</title>
+</head>
+<body>
+{{^username}}
+<form action="/login" method="post">
+    <input type="text" name="username" placeholder="Username"/>
+    <input type="password" name="password" placeholder="Password"/>
+    <button type="submit">Login</button>
+</form>
+{{/username}}
+{{#username}}
+Welcome, {{.}}.
+<br>
+<br>
+<form action="/create-concert" method="post">
+    <input type="text" name="bandName" placeholder="Band Name"/>
+    <input type="text" name="venue" placeholder="Venue Name"/>
+    <input type="datetime-local" name="date"/>
+    <select name="rating">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+    </select>
+    <input type="text" name="highlights" placeholder="Highlights"/>
+    <button type="submit">Submit</button>
+</form>
+
+<ul>
+    {{#concerts}}
+    <li>
+        {{bandName}} <> {{venue}} <> {{date}} <> {{rating}}/5 <> {{highlights}}
+        <form action="/delete-concert" method="post" style="display: inline-block;">
+            <input type="hidden" name="id" value="{{id}}"/>
+            <button type="submit">Delete Concert</button>
+        </form>
+
+        <form action="/getEdit" method="post" style="display: inline-block;">
+            <input type="hidden" value="true"/>
+            <button type="submit">Edit</button>
+            {{#openEdit}} TRUE{{/openEdit}} {{^openEdit}}FALSE{{/openEdit}}
+            {{#openEdit}}
+            <form action="/edit-concert" method="post">
+            <input type="text" name="bandName" placeholder="Band Name"/>
+            <input type="text" name="venue" placeholder="Venue Name"/>
+            <input type="datetime-local" name="date"/>
+            <select name="rating">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+            <input type="text" name="highlights" placeholder="Highlights"/>
+            <button type="submit">Edit</button>
+            {{/openEdit}}
+        </form>
+
+
+    </li>
+    {{/concerts}}
+</ul>
+{{#edit}}
+<form action="/edit-concert" method="post">
+    <input type="text" name="bandName" placeholder="Band Name"/>
+    <input type="text" name="venue" placeholder="Venue Name"/>
+    <input type="datetime-local" name="date"/>
+    <select name="rating">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+    </select>
+    <input type="text" name="highlights" placeholder="Highlights"/>
+    <button type="submit">Submit</button>
+</form>
+{{/edit}}
+
+<form action="/logout" method="post">
+    <button type="submit">Logout</button>
+</form>
+{{/username}}
+
+</body>
+</html>
