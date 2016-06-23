@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * Created by jonathandavidblack on 6/23/16.
@@ -71,6 +72,13 @@ public class ConcertTrackerController {
     @RequestMapping(path ="/getEdit", method = RequestMethod.POST)
     public String updateConcert() {
         openEdit = true;
+        return "redirect:/";
+    }
+    @RequestMapping(path="//edit-concert", method = RequestMethod.POST)
+    public String actuallyUpdateConcert(int id, String bandName, String venue, String date, int rating, String highlights, String username) {
+        Concert concert = new Concert(id, bandName, venue, LocalDateTime.parse(date), rating, highlights);
+        concerts.save(concert);
+        openEdit = false;
         return "redirect:/";
     }
     @RequestMapping(path = "/logout", method = RequestMethod.POST)

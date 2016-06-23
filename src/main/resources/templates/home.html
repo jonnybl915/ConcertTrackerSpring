@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" type="text/css" href="style.css">
     <meta charset="UTF-8">
     <title>Concert Tracker</title>
 </head>
@@ -13,7 +14,7 @@
 </form>
 {{/username}}
 {{#username}}
-Welcome, {{.}}.
+<h2><img src="https://d30y9cdsu7xlg0.cloudfront.net/png/270412-200.png" alt="this stuff" width="100px" height="100px"/> Welcome, {{.}}. <img src="https://d30y9cdsu7xlg0.cloudfront.net/png/270412-200.png" alt="this stuff" width="100px" height="100px"/> </h2>
 <br>
 <br>
 <form action="/create-concert" method="post">
@@ -31,6 +32,7 @@ Welcome, {{.}}.
     <button type="submit">Submit</button>
 </form>
 
+
 <ul>
     {{#concerts}}
     <li>
@@ -39,16 +41,15 @@ Welcome, {{.}}.
             <input type="hidden" name="id" value="{{id}}"/>
             <button type="submit">Delete Concert</button>
         </form>
-
         <form action="/getEdit" method="post" style="display: inline-block;">
             <input type="hidden" value="true"/>
             <button type="submit">Edit</button>
-            {{#openEdit}} TRUE{{/openEdit}} {{^openEdit}}FALSE{{/openEdit}}
-            {{#openEdit}}
-            <form action="/edit-concert" method="post">
-            <input type="text" name="bandName" placeholder="Band Name"/>
-            <input type="text" name="venue" placeholder="Venue Name"/>
-            <input type="datetime-local" name="date"/>
+        </form>
+        {{#openEdit}}
+        <form action="/edit-concert" method="post">
+            <input type="text" name="bandName" value="{{bandName}}" placeholder="Band Name"/>
+            <input type="text" name="venue" value="{{venue}}" placeholder="Venue Name"/>
+            <input type="datetime-local" value="{{date}}" name="date"/>
             <select name="rating">
                 <option value="1">1</option>
                 <option value="2">2</option>
@@ -56,31 +57,16 @@ Welcome, {{.}}.
                 <option value="4">4</option>
                 <option value="5">5</option>
             </select>
-            <input type="text" name="highlights" placeholder="Highlights"/>
-            <button type="submit">Edit</button>
+            <input type="text" name="highlights" value="{{highlights}}" placeholder="Highlights"/>
+            <input type="hidden" name="id" value="{{id}}"/>
+            <button type="submit">Update</button>
             {{/openEdit}}
         </form>
-
-
     </li>
+    <br>
     {{/concerts}}
 </ul>
-{{#edit}}
-<form action="/edit-concert" method="post">
-    <input type="text" name="bandName" placeholder="Band Name"/>
-    <input type="text" name="venue" placeholder="Venue Name"/>
-    <input type="datetime-local" name="date"/>
-    <select name="rating">
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-    </select>
-    <input type="text" name="highlights" placeholder="Highlights"/>
-    <button type="submit">Submit</button>
-</form>
-{{/edit}}
+
 
 <form action="/logout" method="post">
     <button type="submit">Logout</button>
