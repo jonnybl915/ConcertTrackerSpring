@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ConcertTrackerSpring.iml" filepath="$PROJECT_DIR$/.idea/modules/ConcertTrackerSpring.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ConcertTrackerSpring_main.iml" filepath="$PROJECT_DIR$/.idea/modules/ConcertTrackerSpring_main.iml" group="ConcertTrackerSpring" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ConcertTrackerSpring_test.iml" filepath="$PROJECT_DIR$/.idea/modules/ConcertTrackerSpring_test.iml" group="ConcertTrackerSpring" />
+    </modules>
+  </component>
+</project>
