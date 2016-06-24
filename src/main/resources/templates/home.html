@@ -14,20 +14,21 @@
 </form>
 {{/username}}
 {{#username}}
-<h2><img src="https://d30y9cdsu7xlg0.cloudfront.net/png/270412-200.png" alt="this stuff" width="100px" height="100px"/> Welcome, {{.}}. <img src="https://d30y9cdsu7xlg0.cloudfront.net/png/270412-200.png" alt="this stuff" width="100px" height="100px"/> </h2>
+<h2><img src="https://d30y9cdsu7xlg0.cloudfront.net/png/270412-200.png" alt="this stuff" width="100px" height="100px"/> <span class="welcome"> Welcome, {{.}}.</span> <img src="https://d30y9cdsu7xlg0.cloudfront.net/png/270412-200.png" alt="this stuff" width="100px" height="100px"/> </h2>
 <br>
 <br>
 <form action="/create-concert" method="post">
     <input type="text" name="bandName" placeholder="Band Name"/>
     <input type="text" name="venue" placeholder="Venue Name"/>
     <input type="datetime-local" name="date"/>
-    <select name="rating">
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-    </select>
+
+    <label> <input type="radio" hidden id="rating-1" name="rating" value="1" /> <img src="https://d30y9cdsu7xlg0.cloudfront.net/png/356778-200.png" width="25px" height="25px"></label>
+    <label> <input type="radio" hidden id="rating-2" name="rating" value="2" /> <img src="https://d30y9cdsu7xlg0.cloudfront.net/png/356778-200.png" width="25px" height="25px"></label>
+    <label> <input type="radio" id="rating-3" name="rating" value="3" /> <img src="https://d30y9cdsu7xlg0.cloudfront.net/png/356778-200.png" width="25px" height="25px"></label>
+    <label> <input type="radio" id="rating-4" name="rating" value="4" /> <img src="https://d30y9cdsu7xlg0.cloudfront.net/png/356778-200.png" width="25px" height="25px"></label>
+    <label> <input type="radio" id="rating-5" name="rating" value="5" /> <img src="https://d30y9cdsu7xlg0.cloudfront.net/png/356778-200.png" width="25px" height="25px"></label>
+
+
     <input type="text" name="highlights" placeholder="Highlights"/>
     <button type="submit">Submit</button>
 </form>
