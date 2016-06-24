@@ -32,13 +32,21 @@ public class ConcertTrackerController {
     @RequestMapping(path="/", method = RequestMethod.GET)
     public String home(HttpSession session, Model model) {
 
-
         String username = (String) session.getAttribute("username");
         model.addAttribute("username", username);
+        User user = users.findByName(username);
 
-
-            Iterable<Concert> ccts;
-            ccts = concerts.findAll();
+        Iterable<Concert> ccts;
+        ccts = concerts.findAll();
+        for (Concert concert : ccts) {
+            if (concert.getCreator() == user) {
+                isMe = true;
+            }
+            else{
+                isMe = false;
+            }
+        }
+            model.addAttribute("isMe", isMe);
             model.addAttribute("concerts", ccts);
             model.addAttribute("openEdit", openEdit);
 
@@ -59,17 +67,19 @@ public class ConcertTrackerController {
         return"redirect:/";
     }
     @RequestMapping(path = "/create-concert", method = RequestMethod.POST)
-    public String createConcert(HttpSession session, String bandName, String venue, String date, int rating, String highlights, String author) {
+    public String createConcert(HttpSession session, String bandName, String venue, String date, int rating, String highlights) {
         String username = (String) session.getAttribute("username");
         User user = users.findByName(username);
-        Concert concert = new Concert(bandName, venue, LocalDateTime.parse(date), rating, highlights);
+        Concert concert = new Concert(bandName, venue, LocalDateTime.parse(date), rating, highlights, user);
         concerts.save(concert);
+
         return "redirect:/";
     }
 
     @RequestMapping(path = "/delete-concert", method = RequestMethod.POST)
-    public String delete(int id) {
+    public String delete(int id, HttpSession session) {
         concerts.delete(id);
+
         return "redirect:/";
     }
     @RequestMapping(path ="/getEdit", method = RequestMethod.POST)
@@ -87,6 +97,25 @@ public class ConcertTrackerController {
     @RequestMapping(path = "/logout", method = RequestMethod.POST)
     public String logout(HttpSession session) {
         session.invalidate();
+        return "redirect:/";
+    }
+    @RequestMapping(path = "/attended", method = RequestMethod.POST)
+    public String attended(HttpSession session, int id) {
+        String username = (String) session.getAttribute("username");
+        User user = users.findByName(username);
+        if (user == null) {
+            return "redirect:/";
+        }
+        Concert concert = concerts.findOne(id);
+        List<User> userList = concert.getUserList();
+        if(concert.containsUser(user.getId())) {
+            userList.add(user);
+            concerts.save(concert);
+            }
+
+        else{
+            return "redirect:/";
+        }
         return "redirect:/";
     }
 }

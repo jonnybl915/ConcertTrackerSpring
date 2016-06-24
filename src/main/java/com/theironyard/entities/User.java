@@ -19,6 +19,9 @@ public class User {
     @Column(nullable = false)
     String password;
 
+    @Transient //won't go into the database
+    boolean author = false;
+
     @ManyToMany
     @JoinTable(name = "user_concerts",joinColumns={@JoinColumn(name="users_id")}, inverseJoinColumns={@JoinColumn(name="concerts_id")})
     List<Concert> concertList;

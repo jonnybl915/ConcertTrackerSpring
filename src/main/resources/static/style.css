@@ -30,7 +30,15 @@ label > input:checked + img{
     border: none;
     background-color: transparent;
 }
-.radioButtons {
-
-
+h1 {
+	font-family: "Lucida Sans Typewriter", "Lucida Console", monaco, "Bitstream Vera Sans Mono", monospace;
+	font-size: 24px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 500;
+	line-height: 26.4px;
+	text-align: center
+}
+.loginForm {
+    text-align: center
 }

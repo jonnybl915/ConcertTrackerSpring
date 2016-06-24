@@ -27,7 +27,10 @@ public class Concert {
     @Column
     String highlights;
 
-    @ManyToMany(mappedBy="concertList")
+    @ManyToOne
+    User creator;
+
+    @ManyToMany(mappedBy="concertList", cascade = CascadeType.ALL)
     List<User> userList;
 
     public Concert() {
@@ -40,6 +43,15 @@ public class Concert {
         this.date = date;
         this.rating = rating;
         this.highlights = highlights;
+    }
+
+    public Concert(String bandName, String venue, LocalDateTime date, int rating, String highlights, User creator) {
+        this.bandName = bandName;
+        this.venue = venue;
+        this.date = date;
+        this.rating = rating;
+        this.highlights = highlights;
+        this.creator = creator;
     }
 
     public Concert(int id, String bandName, String venue, LocalDateTime date, int rating, String highlights) {
@@ -59,6 +71,7 @@ public class Concert {
         this.highlights = highlights;
         this.userList = userList;
     }
+
 
     public int getId() {
         return id;
@@ -114,5 +127,22 @@ public class Concert {
 
     public void setUserList(List userList) {
         this.userList = userList;
+    }
+
+    public User getCreator() {
+        return creator;
+    }
+
+    public void setCreator(User creator) {
+        this.creator = creator;
+    }
+
+    public boolean containsUser(int userId) {
+        for(User u : userList) {
+            if(u.id == userId) {
+                return true;
+            }
+        }
+        return false;
     }
 }
