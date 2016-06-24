@@ -33,14 +33,6 @@ public class Concert {
     public Concert() {
     }
 
-    public Concert(int id, String bandName, String venue, LocalDateTime date, int rating, String highlights) {
-        this.id = id;
-        this.bandName = bandName;
-        this.venue = venue;
-        this.date = date;
-        this.rating = rating;
-        this.highlights = highlights;
-    }
 
     public Concert(String bandName, String venue, LocalDateTime date, int rating, String highlights) {
         this.bandName = bandName;
@@ -50,8 +42,16 @@ public class Concert {
         this.highlights = highlights;
     }
 
-    public Concert(int id, String bandName, String venue, LocalDateTime date, int rating, String highlights, List<User> userList) {
+    public Concert(int id, String bandName, String venue, LocalDateTime date, int rating, String highlights) {
         this.id = id;
+        this.bandName = bandName;
+        this.venue = venue;
+        this.date = date;
+        this.rating = rating;
+        this.highlights = highlights;
+    }
+
+    public Concert(String bandName, String venue, LocalDateTime date, int rating, String highlights, List<User> userList) {
         this.bandName = bandName;
         this.venue = venue;
         this.date = date;

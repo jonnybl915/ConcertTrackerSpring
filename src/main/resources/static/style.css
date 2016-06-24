@@ -19,7 +19,7 @@ label > input{
 
 label > input + img{
     cursor:pointer;
-    border:2px solid transparent;
+    border:3px solid transparent;
 }
 
 label > input:checked + img{
@@ -29,4 +29,8 @@ label > input:checked + img{
 .editButton {
     border: none;
     background-color: transparent;
+}
+.radioButtons {
+
+
 }

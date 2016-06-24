@@ -27,9 +27,12 @@ public class ConcertTrackerController {
     ConcertRepo concerts;
 
     static boolean openEdit = false;
+    static boolean isMe = false;
 
     @RequestMapping(path="/", method = RequestMethod.GET)
     public String home(HttpSession session, Model model) {
+
+
         String username = (String) session.getAttribute("username");
         model.addAttribute("username", username);
 
@@ -56,7 +59,7 @@ public class ConcertTrackerController {
         return"redirect:/";
     }
     @RequestMapping(path = "/create-concert", method = RequestMethod.POST)
-    public String createConcert(HttpSession session, String bandName, String venue, String date, int rating, String highlights) {
+    public String createConcert(HttpSession session, String bandName, String venue, String date, int rating, String highlights, String author) {
         String username = (String) session.getAttribute("username");
         User user = users.findByName(username);
         Concert concert = new Concert(bandName, venue, LocalDateTime.parse(date), rating, highlights);
@@ -86,7 +89,6 @@ public class ConcertTrackerController {
         session.invalidate();
         return "redirect:/";
     }
-
 }
 
 
