@@ -12,7 +12,7 @@
     Please Sign In
 </h1>
 <form action="/login" method="post" class="loginForm">
-    <input type="text" name="username" style="background-color: #ECECEC;" placeholder="Username"/>
+    <input type="text" autofocus name="username" style="background-color: #ECECEC;" placeholder="Username"/>
     <input type="password" name="password" style="background-color: #ECECEC;" placeholder="Password"/>
     <button type="submit">Login</button>
 </form>
@@ -35,8 +35,8 @@
 
     <button type="submit">Submit</button>
 </form>
-{{#concerts}}
-{{#openEdit}}
+
+{{#itemToEdit}}
 
 <form action="/edit-concert" method="post">
     <input type="text" name="bandName" value="{{bandName}}" placeholder="Band Name"/>
@@ -54,41 +54,37 @@
     <button type="submit">Update</button>
 </form>
 
-{{/openEdit}}
-{{/concerts}}
+{{/itemToEdit}}
 
 
 
 <ul>
 
-    {{#editableConcerts}}
+    {{#concerts}}
     <li>
 
         {{bandName}} <> {{venue}} <> {{date}} <> {{rating}}/5 <> {{highlights}}
 
-
+{{#creator.author}}
         <form action="/delete-concert" method="post" style="display: inline-block;">
             <input type="hidden" name="id" value="{{id}}"/>
             <button type="submit">Delete Concert</button>
         </form>
-        <form action="/getEdit" method="post" style="display: inline-block;">
-            <input type="hidden" value="true"/>
+        <form action="/" method="get" style="display: inline-block;">
+            <input type="hidden" name="itemToEdit" value="{{id}}"/>
             <button class="editButton" type="submit"><img src="https://d30y9cdsu7xlg0.cloudfront.net/png/183340-200.png" width="20px" height="20px"></button>
         </form>
+        {{/creator.author}}
+
         <form action="/attended" method="post" style="display: inline-block;">
-            <button class="haveAttended" type="submit">Attended</button>
+            <button class="haveAttended" type="submit">Attended / Attending</button>
             <input type="hidden" name="id" value="{{id}}"/>
         </form>
 
     </li>
-    {{/editableConcerts}}
-         {{#isNotMe}}
-            <li>
+    <br>
+    {{/concerts}}
 
-                 {{bandName}} <> {{venue}} <> {{date}} <> {{rating}}/5 <> {{highlights}}
-
-            </li>
-        {{/isNotMe}}
 
 </ul>
 

@@ -27,12 +27,10 @@ public class ConcertTrackerController {
     @Autowired
     ConcertRepo concerts;
 
-    static boolean openEdit = false;
     static boolean isMe = false;
-    static boolean isNotMe = false;
 
     @RequestMapping(path="/", method = RequestMethod.GET)
-    public String home(HttpSession session, Model model) {
+    public String home(HttpSession session, Model model, Integer itemToEdit) {
 
         String username = (String) session.getAttribute("username");
         model.addAttribute("username", username);
@@ -40,25 +38,17 @@ public class ConcertTrackerController {
 
         Iterable<Concert> ccts;
         ccts = concerts.findAll();
-        ArrayList<Concert> canEditConcerts = new ArrayList<>();
-        ArrayList<Concert> cannotEditConcerts = new ArrayList<>();
-        for (Concert concert : ccts) {
-            if (concert.getCreator() == user) {
-                canEditConcerts.add(concert);
-                isMe = true;
+        if (username != null) {
+            for (Concert concert : ccts) {
+                concert.getCreator().setAuthor(concert.getCreator().getName().equals(username));
             }
         }
-        for (Concert concert: ccts) {
-            if (concert.getCreator() != user) {
-                cannotEditConcerts.add(concert);
-                isNotMe = true;
-            }
+        if (itemToEdit != null) {
+            model.addAttribute("itemToEdit", concerts.findOne(itemToEdit));
         }
-            model.addAttribute("isNotMe", cannotEditConcerts);
-            model.addAttribute("editableConcerts", canEditConcerts);
+
             model.addAttribute("isMe", isMe);
             model.addAttribute("concerts", ccts);
-            model.addAttribute("openEdit", openEdit);
 
 
         return "home";
@@ -100,16 +90,10 @@ public class ConcertTrackerController {
 
         return "redirect:/";
     }
-    @RequestMapping(path ="/getEdit", method = RequestMethod.POST)
-    public String updateConcert() {
-        openEdit = true;
-        return "redirect:/";
-    }
     @RequestMapping(path="//edit-concert", method = RequestMethod.POST)
     public String actuallyUpdateConcert(int id, String bandName, String venue, String date, int rating, String highlights, String username) {
-        Concert concert = new Concert(id, bandName, venue, LocalDateTime.parse(date), rating, highlights);
+        Concert concert = new Concert(id, bandName, venue, LocalDateTime.parse(date), rating, highlights); //maybe should just grab out of db
         concerts.save(concert);
-        openEdit = false;
         return "redirect:/";
     }
     @RequestMapping(path = "/logout", method = RequestMethod.POST)
@@ -126,7 +110,7 @@ public class ConcertTrackerController {
         }
         Concert concert = concerts.findOne(id);
         List<User> userList = concert.getUserList();
-        if(concert.containsUser(user.getId())) {
+        if(!concert.containsUser(user.getId())) {
             userList.add(user);
             concerts.save(concert);
             }

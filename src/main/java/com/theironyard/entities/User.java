@@ -64,4 +64,12 @@ public class User {
     public void setConcertList(List concertList) {
         this.concertList = concertList;
     }
+
+    public boolean isAuthor() {
+        return author;
+    }
+
+    public void setAuthor(boolean author) {
+        this.author = author;
+    }
 }
