@@ -27,7 +27,7 @@ public class ConcertTrackerController {
     @Autowired
     ConcertRepo concerts;
 
-    static boolean isMe = false;
+
 
     @RequestMapping(path="/", method = RequestMethod.GET)
     public String home(HttpSession session, Model model, Integer itemToEdit) {
@@ -47,7 +47,6 @@ public class ConcertTrackerController {
             model.addAttribute("itemToEdit", concerts.findOne(itemToEdit));
         }
 
-            model.addAttribute("isMe", isMe);
             model.addAttribute("concerts", ccts);
 
 
