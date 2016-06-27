@@ -35,7 +35,7 @@
 
     <button type="submit">Submit</button>
 </form>
-{{#concert}}
+{{#concerts}}
 {{#openEdit}}
 
 <form action="/edit-concert" method="post">
@@ -52,39 +52,45 @@
     <input type="text" name="highlights" value="{{highlights}}" placeholder="Highlights"/>
     <input type="hidden" name="id" value="{{id}}"/>
     <button type="submit">Update</button>
-
-    {{/openEdit}}
-    {{/concert}}
-
 </form>
+
+{{/openEdit}}
+{{/concerts}}
+
 
 
 <ul>
-    {{#concerts}}
+
+    {{#editableConcerts}}
     <li>
+
         {{bandName}} <> {{venue}} <> {{date}} <> {{rating}}/5 <> {{highlights}}
-        {{#isMe}}
+
+
         <form action="/delete-concert" method="post" style="display: inline-block;">
             <input type="hidden" name="id" value="{{id}}"/>
             <button type="submit">Delete Concert</button>
         </form>
-        {{/isMe}}
-        {{#isMe}}
         <form action="/getEdit" method="post" style="display: inline-block;">
             <input type="hidden" value="true"/>
             <button class="editButton" type="submit"><img src="https://d30y9cdsu7xlg0.cloudfront.net/png/183340-200.png" width="20px" height="20px"></button>
         </form>
-        {{/isMe}}
         <form action="/attended" method="post" style="display: inline-block;">
             <button class="haveAttended" type="submit">Attended</button>
             <input type="hidden" name="id" value="{{id}}"/>
         </form>
 
     </li>
-    <br>
-    {{/concerts}}
-</ul>
+    {{/editableConcerts}}
+         {{#isNotMe}}
+            <li>
 
+                 {{bandName}} <> {{venue}} <> {{date}} <> {{rating}}/5 <> {{highlights}}
+
+            </li>
+        {{/isNotMe}}
+
+</ul>
 
 <form action="/logout" method="post">
     <button type="submit">Logout</button>

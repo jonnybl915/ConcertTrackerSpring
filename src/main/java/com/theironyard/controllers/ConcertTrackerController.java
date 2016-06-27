@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,6 +29,7 @@ public class ConcertTrackerController {
 
     static boolean openEdit = false;
     static boolean isMe = false;
+    static boolean isNotMe = false;
 
     @RequestMapping(path="/", method = RequestMethod.GET)
     public String home(HttpSession session, Model model) {
@@ -38,14 +40,22 @@ public class ConcertTrackerController {
 
         Iterable<Concert> ccts;
         ccts = concerts.findAll();
+        ArrayList<Concert> canEditConcerts = new ArrayList<>();
+        ArrayList<Concert> cannotEditConcerts = new ArrayList<>();
         for (Concert concert : ccts) {
             if (concert.getCreator() == user) {
+                canEditConcerts.add(concert);
                 isMe = true;
             }
-            else{
-                isMe = false;
+        }
+        for (Concert concert: ccts) {
+            if (concert.getCreator() != user) {
+                cannotEditConcerts.add(concert);
+                isNotMe = true;
             }
         }
+            model.addAttribute("isNotMe", cannotEditConcerts);
+            model.addAttribute("editableConcerts", canEditConcerts);
             model.addAttribute("isMe", isMe);
             model.addAttribute("concerts", ccts);
             model.addAttribute("openEdit", openEdit);
@@ -77,8 +87,16 @@ public class ConcertTrackerController {
     }
 
     @RequestMapping(path = "/delete-concert", method = RequestMethod.POST)
-    public String delete(int id, HttpSession session) {
-        concerts.delete(id);
+    public String delete(int id, HttpSession session, User creator) throws Exception {
+        Concert concert = concerts.findOne(id);
+        String username = (String) session.getAttribute("username");
+        User user = users.findByName(username);
+        if(concert.getCreator() != user) {
+            throw new Exception ("You May Only Delete Posts That You Create!");
+        }
+        else {
+            concerts.delete(id);
+        }
 
         return "redirect:/";
     }
