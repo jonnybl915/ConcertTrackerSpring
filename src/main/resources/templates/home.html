@@ -65,7 +65,7 @@
 
         {{bandName}} <> {{venue}} <> {{date}} <> {{rating}}/5 <> {{highlights}}
 
-{{#creator.author}}
+        {{#creator.author}}
         <form action="/delete-concert" method="post" style="display: inline-block;">
             <input type="hidden" name="id" value="{{id}}"/>
             <button type="submit">Delete Concert</button>
@@ -80,6 +80,17 @@
             <button class="haveAttended" type="submit">Attended / Attending</button>
             <input type="hidden" name="id" value="{{id}}"/>
         </form>
+        <form action="/" method="get" style="display: inline-block;">
+            <button type="submit">Who's Going</button>
+            <input type="hidden" name="userList" value="userList"/>
+        </form>
+        <br>
+
+            {{#userList}}
+          <div> {{name}} </div>
+            {{/userList}}
+
+
 
     </li>
     <br>

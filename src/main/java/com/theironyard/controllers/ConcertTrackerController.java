@@ -30,24 +30,28 @@ public class ConcertTrackerController {
 
 
     @RequestMapping(path="/", method = RequestMethod.GET)
-    public String home(HttpSession session, Model model, Integer itemToEdit) {
-
+    public String home(HttpSession session, Model model, Integer itemToEdit, Integer id) {
         String username = (String) session.getAttribute("username");
         model.addAttribute("username", username);
-        User user = users.findByName(username);
-
         Iterable<Concert> ccts;
         ccts = concerts.findAll();
         if (username != null) {
             for (Concert concert : ccts) {
                 concert.getCreator().setAuthor(concert.getCreator().getName().equals(username));
+
             }
+            model.addAttribute("concerts", ccts);
         }
         if (itemToEdit != null) {
             model.addAttribute("itemToEdit", concerts.findOne(itemToEdit));
         }
+        if(id != null) {
 
-            model.addAttribute("concerts", ccts);
+            Iterable<User> atendeeList = concerts.findOne(id).getUserList();
+            model.addAttribute("userList", atendeeList);
+
+        }
+
 
 
         return "home";
@@ -66,7 +70,7 @@ public class ConcertTrackerController {
         return"redirect:/";
     }
     @RequestMapping(path = "/create-concert", method = RequestMethod.POST)
-    public String createConcert(HttpSession session, String bandName, String venue, String date, int rating, String highlights) {
+    public String createConcert(HttpSession session, String bandName, String venue, String date, int rating, String highlights, User creator) {
         String username = (String) session.getAttribute("username");
         User user = users.findByName(username);
         Concert concert = new Concert(bandName, venue, LocalDateTime.parse(date), rating, highlights, user);
@@ -90,8 +94,10 @@ public class ConcertTrackerController {
         return "redirect:/";
     }
     @RequestMapping(path="//edit-concert", method = RequestMethod.POST)
-    public String actuallyUpdateConcert(int id, String bandName, String venue, String date, int rating, String highlights, String username) {
-        Concert concert = new Concert(id, bandName, venue, LocalDateTime.parse(date), rating, highlights); //maybe should just grab out of db
+    public String updateConcert(HttpSession session, int id, String bandName, String venue, String date, int rating, String highlights) {
+        String username = (String) session.getAttribute("username");
+        User user = users.findByName(username);
+        Concert concert = new Concert(id, bandName, venue, LocalDateTime.parse(date), rating, highlights, user); //maybe should just grab out of db
         concerts.save(concert);
         return "redirect:/";
     }
@@ -101,7 +107,7 @@ public class ConcertTrackerController {
         return "redirect:/";
     }
     @RequestMapping(path = "/attended", method = RequestMethod.POST)
-    public String attended(HttpSession session, int id) {
+    public String attended(HttpSession session, Integer id) {
         String username = (String) session.getAttribute("username");
         User user = users.findByName(username);
         if (user == null) {
@@ -111,7 +117,8 @@ public class ConcertTrackerController {
         List<User> userList = concert.getUserList();
         if(!concert.containsUser(user.getId())) {
             userList.add(user);
-            concerts.save(concert);
+            user.getConcertList().add(concert);
+            users.save(user);
             }
 
         else{
@@ -119,6 +126,15 @@ public class ConcertTrackerController {
         }
         return "redirect:/";
     }
+//    @RequestMapping(path = "/inAttendance", method = RequestMethod.POST) //maybe GET
+//    public String inAttendance(int id, List userList) {
+//        Concert findConcertAttendees = concerts.findOne(id);
+//        userList = findConcertAttendees.getUserList();
+//
+//
+//
+//        return "redirect:/";
+//    }
 }
 
 
